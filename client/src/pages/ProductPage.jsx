@@ -5,7 +5,7 @@ import Web3 from 'web3';
 const web3 = new Web3(Web3.givenProvider);
 
 
-const address = "0x629eCF5ec1Ad8A66061E7881c524cE36908b16Ce";
+const address = "0x2c7633aEF97906B2daB0f1cAe838E043DEa4ECD3";
 const abi = [
 	{
 		"inputs": [
@@ -42,29 +42,79 @@ const abi = [
 		"inputs": [
 			{
 				"internalType": "string",
-				"name": "_data",
+				"name": "_title",
 				"type": "string"
-			}
-		],
-		"name": "getHash",
-		"outputs": [
+			},
 			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_weight",
+				"type": "uint256"
 			}
 		],
-		"stateMutability": "pure",
+		"name": "registerProduct",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "getNum",
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_productID",
+				"type": "uint256"
+			}
+		],
+		"name": "getProduct",
 		"outputs": [
 			{
-				"internalType": "int256",
-				"name": "",
-				"type": "int256"
+				"internalType": "uint256",
+				"name": "productID",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "title",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "weight",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "address payable",
+				"name": "seller",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "buyer",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "delivered",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -136,34 +186,6 @@ const abi = [
 		],
 		"stateMutability": "view",
 		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_title",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_weight",
-				"type": "uint256"
-			}
-		],
-		"name": "registerProduct",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
 	}
 ];
 const contract = new web3.eth.Contract(abi, address);
@@ -180,8 +202,9 @@ const ProductPage = () => {
         const productCount = await contract.methods.getProductLength().call();
         const fetchedProducts = [];        
         for (let i = 0; i <= productCount; i++) {
-          const product = await contract.methods.products(i).call();
-          fetchedProducts.push(product);
+			const product = await contract.methods.getProduct(i).call();
+			console.log(product);
+			fetchedProducts.push(product);
         }
         setProducts(fetchedProducts);
       } catch (error) {
@@ -203,8 +226,8 @@ const ProductPage = () => {
 
           <div class='mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4 lg:mt-16'>
 
-          {products.map((item) => console.log("item:"+item))}
-
+			{products.map((item) => console.log("item:"+ item.productID))}
+			<Card/>
           </div>
         </div>
       </section>
