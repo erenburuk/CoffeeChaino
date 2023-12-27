@@ -5,7 +5,7 @@ import Web3 from 'web3';
 const web3 = new Web3(Web3.givenProvider);
 
 
-const address = "0x2c7633aEF97906B2daB0f1cAe838E043DEa4ECD3";
+const address = "0xA7ab52bE7F5F401c30Eb92D75c3953AFBEaeA687";
 const abi = [
 	{
 		"inputs": [
@@ -64,60 +64,6 @@ const abi = [
 		"name": "registerProduct",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_productID",
-				"type": "uint256"
-			}
-		],
-		"name": "getProduct",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "productID",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "title",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "weight",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "description",
-				"type": "string"
-			},
-			{
-				"internalType": "address payable",
-				"name": "seller",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "buyer",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "delivered",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -201,15 +147,18 @@ const ProductPage = () => {
       try {
         const productCount = await contract.methods.getProductLength().call();
         const fetchedProducts = [];        
-        for (let i = 0; i <= productCount; i++) {
-			const product = await contract.methods.getProduct(i).call();
+        for (let i = 0; i < productCount; i++) {
+			const product = await contract.methods.products(i).call();
 			console.log(product);
 			fetchedProducts.push(product);
+			console.log(fetchedProducts);
         }
         setProducts(fetchedProducts);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+		console.log(products);
+		
     };
     fetchData();
   }, []);
@@ -226,8 +175,17 @@ const ProductPage = () => {
 
           <div class='mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4 lg:mt-16'>
 
-			{products.map((item) => console.log("item:"+ item.productID))}
-			<Card/>
+			{products.map((item) => (
+              <Card
+					key={item.productID}
+					title={item.title}
+					price={item.price}
+					weight={item.weight}
+					description={item.description}
+              />
+            ))}		
+			
+
           </div>
         </div>
       </section>

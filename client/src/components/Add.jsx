@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import React, { useState, useEffect } from 'react';
 const web3 = new Web3(Web3.givenProvider);
 
-const address = "0x2c7633aEF97906B2daB0f1cAe838E043DEa4ECD3";
+const address = "0xA7ab52bE7F5F401c30Eb92D75c3953AFBEaeA687";
 const abi = [
 	{
 		"inputs": [
@@ -61,60 +61,6 @@ const abi = [
 		"name": "registerProduct",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_productID",
-				"type": "uint256"
-			}
-		],
-		"name": "getProduct",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "productID",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "title",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "weight",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "description",
-				"type": "string"
-			},
-			{
-				"internalType": "address payable",
-				"name": "seller",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "buyer",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "delivered",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -199,7 +145,7 @@ const Add = ({ onClose }) => {
 
     const priceInWei = web3.utils.toWei(price.toString(), 'ether');
 
-    const result = await contract.methods.registerProduct(title, description, priceInWei, weight).send({from: account,});
+    const result = await contract.methods.registerProduct(title, description, price, weight).send({from: account,});
     console.log(result);
 
 };

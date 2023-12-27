@@ -1,4 +1,6 @@
-const Card = () => {
+import React from 'react';
+const Card = ({ title, price, weight, description }) => {
+  const priceInEther = price / 10**18;
   return (
     <article class='relative flex flex-col overflow-hidden rounded-lg border'>
       <div class='aspect-square overflow-hidden'>
@@ -15,10 +17,13 @@ const Card = () => {
       </div>
       <div class='my-4 mx-auto flex w-10/12 flex-col items-start justify-between'>
         <div class='mb-2 flex'>
-          <p class='mr-3 text-sm font-semibold'>$99.00</p>
-          <del class='text-xs text-gray-400'> $79.00 </del>
+                  <p className='mr-3 text-sm font-semibold'>${priceInEther}.00</p>
+                  {/* <p class='mr-3 text-sm font-semibold'>$99.00</p>*/}
+                  {/* <del class='text-xs text-gray-400'> $79.00 </del>*/}
         </div>
-        <h3 class='mb-2 text-sm text-gray-400'>Turkish Coffee</h3>
+              <h3 className='mb-2 text-sm text-gray-400'>{title}</h3>
+              <p className='text-sm text-gray-500'>{description}</p>
+              <p className='text-sm text-gray-500'>Weight: {weight} grams</p>
       </div>
       <button class='group mx-auto mb-2 flex h-10 w-10/12 items-stretch overflow-hidden rounded-md text-gray-600'>
         <div class='flex w-full items-center justify-center bg-gray-100 text-xs uppercase transition group-hover:bg-emerald-600 group-hover:text-white'>
