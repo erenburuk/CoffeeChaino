@@ -192,6 +192,7 @@ const ProductPage = () => {
 					price={item.price}
 					weight={item.weight}
 					description={item.description}
+					image = {item.ipfsHash}
               />
             ))}		
 			

@@ -1,12 +1,12 @@
 import React from 'react';
-const Card = ({ title, price, weight, description }) => {
+const Card = ({ title, price, weight, description, image }) => {
   const priceInEther = price / 10**18;
   return (
     <article class='relative flex flex-col overflow-hidden rounded-lg border'>
       <div class='aspect-square overflow-hidden'>
         <img
           class='h-full w-full object-cover transition-all duration-300 group-hover:scale-125'
-          src='/images/coffee.jpg'
+          src= {'http://ipfs.io/ipfs/' + image}
           alt=''
         />
       </div>
@@ -23,7 +23,7 @@ const Card = ({ title, price, weight, description }) => {
         </div>
               <h3 className='mb-2 text-sm text-gray-400'>{title}</h3>
               <p className='text-sm text-gray-500'>{description}</p>
-              <p className='text-sm text-gray-500'>Weight: {weight} grams</p>
+              <p className='text-sm text-gray-500'>Weight: {weight} grams</p>   
       </div>
       <button class='group mx-auto mb-2 flex h-10 w-10/12 items-stretch overflow-hidden rounded-md text-gray-600'>
         <div class='flex w-full items-center justify-center bg-gray-100 text-xs uppercase transition group-hover:bg-emerald-600 group-hover:text-white'>
