@@ -5,7 +5,7 @@ import Web3 from 'web3';
 const web3 = new Web3(Web3.givenProvider);
 
 
-const address = "0xA7ab52bE7F5F401c30Eb92D75c3953AFBEaeA687";
+const address = "0x610Fe5f6d85Bb17D5eaCfDe7AE661F02186e991C";
 const abi = [
 	{
 		"inputs": [
@@ -59,6 +59,11 @@ const abi = [
 				"internalType": "uint256",
 				"name": "_weight",
 				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_ipfsHash",
+				"type": "string"
 			}
 		],
 		"name": "registerProduct",
@@ -128,6 +133,11 @@ const abi = [
 				"internalType": "bool",
 				"name": "delivered",
 				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "ipfsHash",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",

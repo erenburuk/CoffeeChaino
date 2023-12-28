@@ -1,8 +1,10 @@
 import Web3 from 'web3';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+
 const web3 = new Web3(Web3.givenProvider);
 
-const address = "0xA7ab52bE7F5F401c30Eb92D75c3953AFBEaeA687";
+const address = "0x610Fe5f6d85Bb17D5eaCfDe7AE661F02186e991C";
 const abi = [
 	{
 		"inputs": [
@@ -56,6 +58,11 @@ const abi = [
 				"internalType": "uint256",
 				"name": "_weight",
 				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_ipfsHash",
+				"type": "string"
 			}
 		],
 		"name": "registerProduct",
@@ -125,12 +132,18 @@ const abi = [
 				"internalType": "bool",
 				"name": "delivered",
 				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "ipfsHash",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
 		"type": "function"
 	}
 ];
+
 const contract = new web3.eth.Contract(abi, address);
 
 const Add = ({ onClose }) => {
@@ -138,14 +151,31 @@ const Add = ({ onClose }) => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
   const [weight, setWeight] = useState(0);
+  const [image, setImage] = useState(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+  };
 
   const registerProduct = async () => {
     const accounts = await web3.eth.requestAccounts();
     const account = accounts[0];
 
-    const priceInWei = web3.utils.toWei(price.toString(), 'ether');
+    // const priceInWei = web3.utils.toWei(price.toString(), 'ether');
 
-    const result = await contract.methods.registerProduct(title, description, price, weight).send({from: account,});
+	const formData = new FormData();
+	formData.append('file', image, image.name);
+
+	const response = await axios.post('http://localhost:5000/upload-image', formData, {
+	  headers: {
+		'Content-Type': 'multipart/form-data',
+	  },
+	});
+
+	const ipfsHash = response.data.pinataResponse.IpfsHash;
+
+    const result = await contract.methods.registerProduct(title, description, price, weight, ipfsHash).send({from: account,});
     console.log(result);
 
 };
@@ -221,6 +251,17 @@ const Add = ({ onClose }) => {
             onChange={(e) => setPrice(e.target.value)}
           />
         </label>
+
+		<label className='mt-4 block w-full' htmlFor='image'>
+        <p className='mb-1 text-sm text-gray-600'>Select Image</p>
+        <input
+          className='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
+          type='file'
+          accept='image/*'
+          onChange={handleImageChange}
+          id='image'
+        />
+      	</label>
 
 
         <div class='mt-8 flex flex-col justify-center space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0'>
