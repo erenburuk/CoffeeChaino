@@ -127,7 +127,6 @@ console.log('contract' + contract);
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -135,19 +134,16 @@ const ProductPage = () => {
         const fetchedProducts = [];
         for (let i = 0; i < productCount; i++) {
           const product = await contract.methods.products(i).call();
-          console.log(product);
           fetchedProducts.push(product);
-          console.log(fetchedProducts);
         }
         setProducts(fetchedProducts);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-      console.log(products);
     };
     fetchData();
   }, []);
-
+  
   return (
     <>
       <section class='bg-white py-12 text-gray-700 sm:py-16 lg:py-20'>

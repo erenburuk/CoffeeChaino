@@ -123,41 +123,15 @@ const abi = [
 
 const contract = new web3.eth.Contract(abi, address);
 
-const Add = ({ onClose }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0);
-  const [weight, setWeight] = useState(0);
-  const [image, setImage] = useState(null);
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-  };
+const Add = ({ productID, onClose }) => {
+    const [weight, setWeight] = useState(0);
 
   const registerProduct = async () => {
     const accounts = await web3.eth.requestAccounts();
     const account = accounts[0];
 
-    // const priceInWei = web3.utils.toWei(price.toString(), 'ether');
-
-    const formData = new FormData();
-    formData.append('file', image, image.name);
-
-    const response = await axios.post(
-      'http://localhost:5000/upload-image',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
-
-    const ipfsHash = response.data.pinataResponse.IpfsHash;
-
     const result = await contract.methods
-      .registerProduct(title, description, price, weight, ipfsHash)
+      .addWeight(productID, weight)
       .send({ from: account });
   };
 
@@ -198,17 +172,7 @@ const Add = ({ onClose }) => {
         />
       </svg>
       <div class='flex flex-col items-center px-8 pb-10'>
-        <label class='block w-full' for='name'>
-          <p class='mb-1 text-sm text-gray-600'>Coffee Name</p>
-          <input
-            class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
-            type='text'
-            id='title'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder='Enter name'
-          />
-        </label>
+
 
         <label class='mt-4 block w-full' for='name'>
           <p class='mb-1 text-sm text-gray-600'>Weight</p>
@@ -220,43 +184,6 @@ const Add = ({ onClose }) => {
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
             id='weight'
-          />
-        </label>
-
-        <label class='mt-4 block w-full' for='name'>
-          <p class='mb-1 text-sm text-gray-600'>Description</p>
-          <input
-            class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
-            type='text'
-            placeholder='Enter description'
-            id='description'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </label>
-
-        <label class='mt-4 block w-full' for='name'>
-          <p class='mb-1 text-sm text-gray-600'>Price</p>
-          <input
-            class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
-            type='number'
-            min='0'
-            max='1'
-            step='0.1'
-            id='price'
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </label>
-
-        <label className='mt-4 block w-full' htmlFor='image'>
-          <p className='mb-1 text-sm text-gray-600'>Select Image</p>
-          <input
-            className='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
-            type='file'
-            accept='image/*'
-            onChange={handleImageChange}
-            id='image'
           />
         </label>
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Add from './Add';
+import AddWeight from './AddWeight';
 
-const Card = ({ title, price, weight, description, image }) => {
+const Card = ({ productID, title, price, weight, description, image }) => {
   const priceInEther = price / 10 ** 18;
 
   const [isAddModalVisible, setAddModalVisible] = useState(false);
@@ -49,7 +49,7 @@ const Card = ({ title, price, weight, description, image }) => {
       </a>
       {isAddModalVisible && (
         <div class='fixed inset-0 text-xl bg-gray-800 bg-opacity-50 z-50 flex items-center justify-center'>
-          <Add onClose={closeAddModal} />
+          <AddWeight key={productID} onClose={closeAddModal} />
         </div>
       )}
     </article>
