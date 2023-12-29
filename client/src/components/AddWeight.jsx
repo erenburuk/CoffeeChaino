@@ -123,10 +123,11 @@ const abi = [
 
 const contract = new web3.eth.Contract(abi, address);
 
-const Add = ({ productID, onClose }) => {
+const AddWeight = ({ productID, onClose }) => {
     const [weight, setWeight] = useState(0);
 
   const registerProduct = async () => {
+    onClose();  
     const accounts = await web3.eth.requestAccounts();
     const account = accounts[0];
 
@@ -188,11 +189,12 @@ const Add = ({ productID, onClose }) => {
         </label>
 
         <div class='mt-8 flex flex-col justify-center space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0'>
-          <button
+          <button 
             onClick={registerProduct}
             class='inline-flex h-12 w-full items-center justify-center rounded-full bg-green-500 px-6 font-medium tracking-wide text-white shadow-md outline-none transition duration-200 hover:bg-green-400 focus:ring sm:w-auto'
           >
             Add
+            
           </button>
           <a
             onClick={onClose}
@@ -206,4 +208,4 @@ const Add = ({ productID, onClose }) => {
   );
 };
 
-export default Add;
+export default AddWeight;

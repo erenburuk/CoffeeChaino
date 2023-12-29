@@ -49,7 +49,7 @@ const Card = ({ productID, title, price, weight, description, image }) => {
       </a>
       {isAddModalVisible && (
         <div class='fixed inset-0 text-xl bg-gray-800 bg-opacity-50 z-50 flex items-center justify-center'>
-          <AddWeight key={productID} onClose={closeAddModal} />
+          <AddWeight productID={productID} onClose={closeAddModal} />
         </div>
       )}
     </article>

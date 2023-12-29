@@ -156,7 +156,7 @@ const ProductPage = () => {
           <div class='mt-10 grid grid-cols-2 gap-10 sm:grid-cols-4 sm:gap-10 lg:mt-16'>
             {products.map((item) => (
               <Card
-                key={item.productID}
+                productID={item.productID}
                 title={item.title}
                 price={item.price}
                 weight={item.weight}
