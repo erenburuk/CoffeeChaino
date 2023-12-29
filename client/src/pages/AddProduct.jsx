@@ -3,7 +3,7 @@ import Web3 from 'web3';
 
 const web3 = new Web3(Web3.givenProvider);
 
-const address = "0x610Fe5f6d85Bb17D5eaCfDe7AE661F02186e991C";
+const address = "0x168b3D883e5C5E97707A8677072Eb3ec2F21Ab61";
 const abi = [
 	{
 		"inputs": [
@@ -14,24 +14,11 @@ const abi = [
 			},
 			{
 				"internalType": "uint256",
-				"name": "_productWeight",
+				"name": "_weight",
 				"type": "uint256"
 			}
 		],
-		"name": "buyProduct",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_productID",
-				"type": "uint256"
-			}
-		],
-		"name": "delivery",
+		"name": "addWeight",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -123,23 +110,13 @@ const abi = [
 				"type": "address"
 			},
 			{
-				"internalType": "address",
-				"name": "buyer",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "delivered",
-				"type": "bool"
-			},
-			{
 				"internalType": "string",
 				"name": "ipfsHash",
 				"type": "string"
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function"
 	}
 ];
 const contract = new web3.eth.Contract(abi, address);
