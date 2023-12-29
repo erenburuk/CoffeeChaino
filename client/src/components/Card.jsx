@@ -33,7 +33,9 @@ const Card = ({ productID, title, price, weight, description, image }) => {
             </span>{' '}
             <span className='font-normal'>in stock</span>
           </p>
-          <p className='text-2xl font-bold self-center'>${priceInEther}.00</p>
+          <p className='text-xl font-bold self-center'>
+            ${priceInEther}.00<span className='text-sm font-light'>/kilos</span>
+          </p>
         </div>
       </div>
       <a

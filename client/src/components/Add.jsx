@@ -4,121 +4,121 @@ import axios from 'axios';
 
 const web3 = new Web3(Web3.givenProvider);
 
-const address = '0x168b3D883e5C5E97707A8677072Eb3ec2F21Ab61';
+const address = '0xD603A076B83B2869aeF6e6811C270E5Dc2B0900f';
 const abi = [
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_productID",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_weight",
-				"type": "uint256"
-			}
-		],
-		"name": "addWeight",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_title",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_weight",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_ipfsHash",
-				"type": "string"
-			}
-		],
-		"name": "registerProduct",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getProductLength",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "products",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "productID",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "title",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "weight",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "description",
-				"type": "string"
-			},
-			{
-				"internalType": "address payable",
-				"name": "seller",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "ipfsHash",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_productID',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_weight',
+        type: 'uint256',
+      },
+    ],
+    name: 'addWeight',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: '_title',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: '_description',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: '_price',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_weight',
+        type: 'uint256',
+      },
+      {
+        internalType: 'string',
+        name: '_ipfsHash',
+        type: 'string',
+      },
+    ],
+    name: 'registerProduct',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getProductLength',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    name: 'products',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'productID',
+        type: 'uint256',
+      },
+      {
+        internalType: 'string',
+        name: 'title',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: 'price',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'weight',
+        type: 'uint256',
+      },
+      {
+        internalType: 'string',
+        name: 'description',
+        type: 'string',
+      },
+      {
+        internalType: 'address payable',
+        name: 'seller',
+        type: 'address',
+      },
+      {
+        internalType: 'string',
+        name: 'ipfsHash',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ];
 
 const contract = new web3.eth.Contract(abi, address);
@@ -136,6 +136,7 @@ const Add = ({ onClose }) => {
   };
 
   const registerProduct = async () => {
+    onClose();
     const accounts = await web3.eth.requestAccounts();
     const account = accounts[0];
 
@@ -211,6 +212,18 @@ const Add = ({ onClose }) => {
         </label>
 
         <label class='mt-4 block w-full' for='name'>
+          <p class='mb-1 text-sm text-gray-600'>Description</p>
+          <input
+            class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
+            type='text'
+            placeholder='Enter description'
+            id='description'
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </label>
+
+        <label class='mt-4 block w-full' for='name'>
           <p class='mb-1 text-sm text-gray-600'>Weight</p>
           <input
             class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
@@ -224,19 +237,7 @@ const Add = ({ onClose }) => {
         </label>
 
         <label class='mt-4 block w-full' for='name'>
-          <p class='mb-1 text-sm text-gray-600'>Description</p>
-          <input
-            class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
-            type='text'
-            placeholder='Enter description'
-            id='description'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </label>
-
-        <label class='mt-4 block w-full' for='name'>
-          <p class='mb-1 text-sm text-gray-600'>Price</p>
+          <p class='mb-1 text-sm text-gray-600'>Price per kilos</p>
           <input
             class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
             type='number'

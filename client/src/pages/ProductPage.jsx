@@ -4,122 +4,123 @@ import Web3 from 'web3';
 
 const web3 = new Web3(Web3.givenProvider);
 
-const address = '0x168b3D883e5C5E97707A8677072Eb3ec2F21Ab61';
+const address = '0xD603A076B83B2869aeF6e6811C270E5Dc2B0900f';
 const abi = [
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_productID",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_weight",
-				"type": "uint256"
-			}
-		],
-		"name": "addWeight",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_title",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_weight",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_ipfsHash",
-				"type": "string"
-			}
-		],
-		"name": "registerProduct",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getProductLength",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "products",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "productID",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "title",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "weight",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "description",
-				"type": "string"
-			},
-			{
-				"internalType": "address payable",
-				"name": "seller",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "ipfsHash",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_productID',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_weight',
+        type: 'uint256',
+      },
+    ],
+    name: 'addWeight',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: '_title',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: '_description',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: '_price',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_weight',
+        type: 'uint256',
+      },
+      {
+        internalType: 'string',
+        name: '_ipfsHash',
+        type: 'string',
+      },
+    ],
+    name: 'registerProduct',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getProductLength',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    name: 'products',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'productID',
+        type: 'uint256',
+      },
+      {
+        internalType: 'string',
+        name: 'title',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: 'price',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'weight',
+        type: 'uint256',
+      },
+      {
+        internalType: 'string',
+        name: 'description',
+        type: 'string',
+      },
+      {
+        internalType: 'address payable',
+        name: 'seller',
+        type: 'address',
+      },
+      {
+        internalType: 'string',
+        name: 'ipfsHash',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ];
+
 const contract = new web3.eth.Contract(abi, address);
 
 console.log('web3' + web3);
@@ -143,7 +144,7 @@ const ProductPage = () => {
     };
     fetchData();
   }, []);
-  
+
   return (
     <>
       <section class='bg-white py-12 text-gray-700 sm:py-16 lg:py-20'>
