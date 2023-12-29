@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Add from './Add';
 
 const Navbar = () => {
@@ -13,16 +14,16 @@ const Navbar = () => {
   };
 
   return (
-    <header class='relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-4 text-slate-700 md:mx-auto md:flex-row md:items-center'>
-      <a
-        href='#'
-        class='flex cursor-pointer items-center whitespace-nowrap text-2xl font-black'
+    <header class='relative flex flex-col overflow-hidden px-16 py-4 text-slate-700 shadow-md md:mx-auto md:flex-row md:items-center'>
+      <Link
+        to='/'
+        class='flex cursor-pointer items-center whitespace-nowrap text-4xl font-black'
       >
         <span class='mr-2 text-4xl text-green-500'>
           <svg
             role='img'
-            width='1em'
-            height='1em'
+            width='1.4em'
+            height='1.4em'
             viewBox='0 0 24 24'
             fill='none'
             xmlns='http://www.w3.org/2000/svg'
@@ -35,8 +36,8 @@ const Navbar = () => {
             />
           </svg>
         </span>
-        CoffeeChaino
-      </a>
+        Coffee<span class='text-green-500'>Chaino</span>
+      </Link>
       <input type='checkbox' class='peer hidden' id='navbar-open' />
       <label
         class='absolute top-5 right-7 cursor-pointer md:hidden'
@@ -62,29 +63,40 @@ const Navbar = () => {
         aria-label='Header Navigation'
         class='flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all peer-checked:mt-8 peer-checked:max-h-56 md:ml-24 md:max-h-full md:flex-row md:items-start'
       >
-        <ul class='flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0'>
-          <li class='font-bold md:mr-12'>
-            <a href='#'>Stock</a>
-          </li>
-          <li class='md:mr-12'>
-            <a href='#' onClick={openAddModal}>
-              Add
-            </a>
-          </li>
+        <div class='flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0'>
+          <Link
+            to='/stocks'
+            className='font-bold text-xl md:mr-8 hover:text-green-500'
+          >
+            Stocks
+          </Link>
+          <a
+            href='#'
+            class='rounded-full cursor-pointer border-2 font-bold border-green-500 px-6 py-1 bg-green-500 text-white transition-colors hover:bg-green-400 hover:text-white flex gap-1'
+            onClick={openAddModal}
+          >
+            <span className=''>Add</span>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke-width='1.5'
+              stroke='currentColor'
+              class='w-6 h-6'
+            >
+              <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                d='M12 4.5v15m7.5-7.5h-15'
+              />
+            </svg>
+          </a>
           {isAddModalVisible && (
-            <div class='fixed inset-0 bg-gray-800 bg-opacity-50 z-50 flex items-center justify-center'>
+            <div class='fixed inset-0 text-xl bg-gray-800 bg-opacity-50 z-50 flex items-center justify-center'>
               <Add onClose={closeAddModal} />
             </div>
           )}
-          <li class='md:mr-12'>
-            <a href='#'>Support</a>
-          </li>
-          <li class='md:mr-12'>
-            <button class='rounded-full border-2 border-green-500 px-6 py-1 text-green-600 transition-colors hover:bg-green-500 hover:text-white'>
-              Login
-            </button>
-          </li>
-        </ul>
+        </div>
       </nav>
     </header>
   );

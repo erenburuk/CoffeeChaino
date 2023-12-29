@@ -1,11 +1,16 @@
 import { useState } from 'react';
-import ProductPage from './ProductPage';
+import { Link } from 'react-router-dom';
+import Add from '../components/Add';
 
 const Home = () => {
-  const [modal, setModal] = useState(false);
+  const [isAddModalVisible, setAddModalVisible] = useState(false);
 
-  const handleModal = () => {
-    setModal(true);
+  const openAddModal = () => {
+    setAddModalVisible(true);
+  };
+
+  const closeAddModal = () => {
+    setAddModalVisible(false);
   };
 
   return (
@@ -19,7 +24,7 @@ const Home = () => {
                   This is CoffeeChaino
                 </p>
               </div>
-              <h2 class='mb-6 max-w-lg font-sans text-3xl font-bold tracking-tight text-slate-700 sm:text-5xl sm:leading-snug'>
+              <h2 class='mb-6 max-w-lg mx-auto font-sans text-3xl font-bold tracking-tight text-slate-700 sm:text-5xl sm:leading-snug'>
                 The #1 Producer <br />
                 in
                 <span class='inline-block text-green-500'>the World</span>
@@ -30,19 +35,27 @@ const Home = () => {
               </p>
             </div>
             <div class='flex flex-col items-center justify-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 lg:justify-start'>
-              <a
-                href='/'
+              <Link
+                to='/stocks'
                 class='inline-flex h-12 w-full items-center justify-center rounded-full bg-green-500 px-6 font-medium tracking-wide text-white shadow-md outline-none transition duration-200 hover:bg-green-400 focus:ring sm:w-auto'
               >
                 {' '}
                 Check Stocks{' '}
-              </a>
+              </Link>
               <a
-                href='/'
-                class='inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-green-500 px-4 font-semibold text-green-600 transition-colors duration-200 hover:border-y-green-400 hover:text-green-400 sm:w-auto'
+                class='cursor-pointer inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-green-500 px-4 font-semibold text-green-600 transition-colors duration-200 hover:border-y-green-400 hover:text-green-400 sm:w-auto'
+                onClick={openAddModal}
               >
-                Add New Beans!
+                Add New Beans! ✨
               </a>
+              <div>
+                {isAddModalVisible && (
+                  <div class='fixed inset-0 text-xl bg-gray-800 bg-opacity-50 z-50 flex items-center justify-center'>
+                    <div className='absolute inset-0'></div>
+                    <Add onClose={closeAddModal} />
+                  </div>
+                )}
+              </div>
             </div>
 
             <div class='mt-6 flex justify-center -space-x-4 lg:justify-start'>
