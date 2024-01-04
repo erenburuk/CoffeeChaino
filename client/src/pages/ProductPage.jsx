@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Card from '../components/Card';
 import Web3 from 'web3';
+import Spinner from '../components/Spinner';
 
 const web3 = new Web3(Web3.givenProvider);
 
@@ -128,18 +129,22 @@ console.log('contract' + contract);
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const productCount = await contract.methods.getProductLength().call();
         const fetchedProducts = [];
-        for (let i = 0; i < productCount; i++) {
+        for (let i = productCount - 1; 0 <= i; i--) {
           const product = await contract.methods.products(i).call();
           fetchedProducts.push(product);
         }
         setProducts(fetchedProducts);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
       }
     };
     fetchData();
@@ -147,6 +152,8 @@ const ProductPage = () => {
 
   return (
     <>
+      {loading && <Spinner />}
+
       <section class='bg-white py-12 text-gray-700 sm:py-16 lg:py-20'>
         <div class='mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8'>
           <div class='mx-auto max-w-md text-center'>

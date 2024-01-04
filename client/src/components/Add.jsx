@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import React, { useState } from 'react';
 import axios from 'axios';
+import Spinner from './Spinner';
 
 const web3 = new Web3(Web3.givenProvider);
 
@@ -129,6 +130,7 @@ const Add = ({ onClose }) => {
   const [price, setPrice] = useState(0);
   const [weight, setWeight] = useState(0);
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -136,11 +138,10 @@ const Add = ({ onClose }) => {
   };
 
   const registerProduct = async () => {
-    onClose();
+    setLoading(true);
+
     const accounts = await web3.eth.requestAccounts();
     const account = accounts[0];
-
-    // const priceInWei = web3.utils.toWei(price.toString(), 'ether');
 
     const formData = new FormData();
     formData.append('file', image, image.name);
@@ -157,126 +158,144 @@ const Add = ({ onClose }) => {
 
     const ipfsHash = response.data.pinataResponse.IpfsHash;
 
-    const result = await contract.methods
-      .registerProduct(title, description, price, weight, ipfsHash)
-      .send({ from: account });
+    try {
+      const result = await contract.methods
+        .registerProduct(title, description, price, weight, ipfsHash)
+        .send({ from: account });
+    } catch (error) {
+      // Handle error if needed
+      console.error('Error registering product:', error);
+    } finally {
+      if (ipfsHash) {
+        setLoading(false);
+        onClose();
+        window.location.reload();
+      }
+    }
   };
 
   return (
-    <div class='relative m-10 max-w-lg  border text-gray-800 shadow-lg bg-white'>
-      <div class='flex flex-row gap-1 mt-7 mb-4 pl-4 text-2xl font-normal text-green-500'>
+    <>
+      {loading && (
+        <div className='fixed inset-0 text-xl bg-gray-800 bg-opacity-50 z-50 flex items-center justify-center'>
+          <Spinner />
+        </div>
+      )}
+      <div class='relative m-10 max-w-lg  border text-gray-800 shadow-lg bg-white'>
+        <div class='flex flex-row gap-1 mt-7 mb-4 pl-4 text-2xl font-normal text-green-500'>
+          <svg
+            width='32px'
+            height='32px'
+            viewBox='0 0 24 24'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path
+              fill-rule='evenodd'
+              clip-rule='evenodd'
+              d='M9.06854 4.95331C9.11355 4.2452 8.40337 3.75898 7.85133 4.20473C5.53866 6.07211 4.43027 9.93002 5.46436 13.7893C6.56631 17.9018 9.74458 20.6867 12.867 20.8262C13.3993 20.85 13.7874 20.3471 13.8687 19.8206C13.9309 19.4177 14.0266 19.0103 14.0708 18.6494C14.2422 17.2498 13.8891 15.8432 13.0771 14.6912L10.2394 10.665C9.32756 9.37129 8.88688 7.81131 8.98724 6.23237L9.06854 4.95331ZM15.5049 20.5061C15.5204 20.5802 15.5984 20.5734 15.667 20.5413C18.6898 19.1285 19.6338 14.7423 18.4464 10.3108C17.3833 6.34333 14.8007 3.61212 11.8894 3.29868C11.265 3.23146 10.8124 3.91115 10.7644 4.53725C10.7108 5.23582 10.5427 5.99084 10.5085 6.52896C10.4264 7.82082 10.7869 9.09717 11.533 10.1557L14.3707 14.1818C15.3631 15.5898 15.7947 17.309 15.5852 19.0197C15.4665 19.989 15.4751 20.3635 15.5049 20.5061Z'
+              fill='#fff'
+              stroke='#40c057'
+            />
+          </svg>
+          <p>Add New Product</p>
+        </div>
+        <hr class='mb-2 border-t border-gray-600-500 mx-auto' />
         <svg
-          width='32px'
-          height='32px'
-          viewBox='0 0 24 24'
-          fill='none'
           xmlns='http://www.w3.org/2000/svg'
+          class='absolute right-0 top-0 m-3 h-6 w-6 cursor-pointer text-gray-400'
+          fill='none'
+          viewBox='0 0 24 24'
+          stroke='currentColor'
+          stroke-width='2'
+          onClick={onClose}
         >
           <path
-            fill-rule='evenodd'
-            clip-rule='evenodd'
-            d='M9.06854 4.95331C9.11355 4.2452 8.40337 3.75898 7.85133 4.20473C5.53866 6.07211 4.43027 9.93002 5.46436 13.7893C6.56631 17.9018 9.74458 20.6867 12.867 20.8262C13.3993 20.85 13.7874 20.3471 13.8687 19.8206C13.9309 19.4177 14.0266 19.0103 14.0708 18.6494C14.2422 17.2498 13.8891 15.8432 13.0771 14.6912L10.2394 10.665C9.32756 9.37129 8.88688 7.81131 8.98724 6.23237L9.06854 4.95331ZM15.5049 20.5061C15.5204 20.5802 15.5984 20.5734 15.667 20.5413C18.6898 19.1285 19.6338 14.7423 18.4464 10.3108C17.3833 6.34333 14.8007 3.61212 11.8894 3.29868C11.265 3.23146 10.8124 3.91115 10.7644 4.53725C10.7108 5.23582 10.5427 5.99084 10.5085 6.52896C10.4264 7.82082 10.7869 9.09717 11.533 10.1557L14.3707 14.1818C15.3631 15.5898 15.7947 17.309 15.5852 19.0197C15.4665 19.989 15.4751 20.3635 15.5049 20.5061Z'
-            fill='#fff'
-            stroke='#40c057'
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            d='M6 18L18 6M6 6l12 12'
           />
         </svg>
-        <p>Add New Product</p>
-      </div>
-      <hr class='mb-2 border-t border-gray-600-500 mx-auto' />
-      <svg
-        xmlns='http://www.w3.org/2000/svg'
-        class='absolute right-0 top-0 m-3 h-6 w-6 cursor-pointer text-gray-400'
-        fill='none'
-        viewBox='0 0 24 24'
-        stroke='currentColor'
-        stroke-width='2'
-        onClick={onClose}
-      >
-        <path
-          stroke-linecap='round'
-          stroke-linejoin='round'
-          d='M6 18L18 6M6 6l12 12'
-        />
-      </svg>
-      <div class='flex flex-col items-center px-8 pb-10'>
-        <label class='block w-full' for='name'>
-          <p class='mb-1 text-sm text-gray-600'>Coffee Name</p>
-          <input
-            class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
-            type='text'
-            id='title'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder='Enter name'
-          />
-        </label>
+        <div class='flex flex-col items-center px-8 pb-10'>
+          <label class='block w-full' for='name'>
+            <p class='mb-1 text-sm text-gray-600'>Coffee Name</p>
+            <input
+              class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-green-600 focus:ring-1'
+              type='text'
+              id='title'
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder='Enter name'
+            />
+          </label>
 
-        <label class='mt-4 block w-full' for='name'>
-          <p class='mb-1 text-sm text-gray-600'>Description</p>
-          <input
-            class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
-            type='text'
-            placeholder='Enter description'
-            id='description'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </label>
+          <label class='mt-4 block w-full' for='name'>
+            <p class='mb-1 text-sm text-gray-600'>Description</p>
+            <input
+              class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-green-600 focus:ring-1'
+              type='text'
+              placeholder='Enter description'
+              id='description'
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </label>
 
-        <label class='mt-4 block w-full' for='name'>
-          <p class='mb-1 text-sm text-gray-600'>Weight</p>
-          <input
-            class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
-            type='number'
-            min='0'
-            step='10'
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-            id='weight'
-          />
-        </label>
+          <label class='mt-4 block w-full' for='name'>
+            <p class='mb-1 text-sm text-gray-600'>Weight</p>
+            <input
+              class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-green-600 focus:ring-1'
+              type='number'
+              min='0'
+              step='10'
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              id='weight'
+            />
+          </label>
 
-        <label class='mt-4 block w-full' for='name'>
-          <p class='mb-1 text-sm text-gray-600'>Price per kilos</p>
-          <input
-            class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
-            type='number'
-            min='0'
-            max='1'
-            step='0.1'
-            id='price'
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </label>
+          <label class='mt-4 block w-full' for='name'>
+            <p class='mb-1 text-sm text-gray-600'>Price per kilos</p>
+            <input
+              class='w-full rounded-md border bg-white py-2 px-2 outline-none ring-green-600 focus:ring-1'
+              type='number'
+              min='0'
+              max='1'
+              step='0.1'
+              id='price'
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </label>
 
-        <label className='mt-4 block w-full' htmlFor='image'>
-          <p className='mb-1 text-sm text-gray-600'>Select Image</p>
-          <input
-            className='w-full rounded-md border bg-white py-2 px-2 outline-none ring-blue-600 focus:ring-1'
-            type='file'
-            accept='image/*'
-            onChange={handleImageChange}
-            id='image'
-          />
-        </label>
+          <label className='mt-4 block w-full' htmlFor='image'>
+            <p className='mb-1 text-sm text-gray-600'>Select Image</p>
+            <input
+              className='w-full rounded-md border bg-white py-2 px-2 outline-none ring-green-600 focus:ring-1'
+              type='file'
+              accept='image/*'
+              onChange={handleImageChange}
+              id='image'
+            />
+          </label>
 
-        <div class='mt-8 flex flex-col justify-center space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0'>
-          <button
-            onClick={registerProduct}
-            class='inline-flex h-12 w-full items-center justify-center rounded-full bg-green-500 px-6 font-medium tracking-wide text-white shadow-md outline-none transition duration-200 hover:bg-green-400 focus:ring sm:w-auto'
-          >
-            Add
-          </button>
-          <a
-            onClick={onClose}
-            class='cursor-pointer inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-green-500 px-4 font-semibold text-green-600 transition-colors duration-200 hover:border-y-green-400 hover:text-green-400 sm:w-auto'
-          >
-            Cancel
-          </a>
+          <div class='mt-8 flex flex-col justify-center space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0'>
+            <button
+              onClick={registerProduct}
+              class='inline-flex h-12 w-full items-center justify-center rounded-full bg-green-500 px-6 font-medium tracking-wide text-white shadow-md outline-none transition duration-200 hover:bg-green-400 focus:ring sm:w-auto'
+            >
+              Add
+            </button>
+            <a
+              onClick={onClose}
+              className='cursor-pointer inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-green-500 px-4 font-semibold text-green-600 transition-colors duration-200 hover:border-y-green-400 hover:text-green-400 sm:w-auto'
+            >
+              Cancel
+            </a>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
